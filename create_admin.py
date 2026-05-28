@@ -6,10 +6,10 @@ django.setup()
 
 from accounts.models import User, UserRole, UserStatus
 
-email = os.environ.get('ADMIN_EMAIL', 'admin@campus237.com')
+email = os.environ.get('ADMIN_EMAIL', 'danielle@campus237.com')
 password = os.environ.get('ADMIN_PASSWORD', 'AdminPass123!')
-nom = os.environ.get('ADMIN_NOM', 'Admin')
-prenom = os.environ.get('ADMIN_PRENOM', 'Super')
+nom = os.environ.get('ADMIN_NOM', 'Danielle')
+prenom = os.environ.get('ADMIN_PRENOM', 'Achley')
 
 if not User.objects.filter(email=email).exists():
     User.objects.create_superuser(
