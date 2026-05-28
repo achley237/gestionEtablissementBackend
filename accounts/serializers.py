@@ -1,9 +1,23 @@
 from django.contrib.auth import authenticate
 from rest_framework import serializers
 from rest_framework.exceptions import AuthenticationFailed, PermissionDenied
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer as BaseTokenObtainPairSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import User, UserRole, UserStatus
+
+
+class CustomTokenObtainPairSerializer(BaseTokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+
+        token['email'] = user.email
+        token['first_name'] = user.prenom
+        token['last_name'] = user.nom
+        token['role'] = user.role
+
+        return token
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -77,7 +91,7 @@ class LoginSerializer(serializers.Serializer):
         if user.statut != UserStatus.ACTIF or not user.is_active:
             raise PermissionDenied('Ce compte est suspendu ou banni.')
 
-        refresh = RefreshToken.for_user(user)
+        refresh = CustomTokenObtainPairSerializer.get_token(user)
         return {
             'refresh': str(refresh),
             'access': str(refresh.access_token),
