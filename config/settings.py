@@ -150,7 +150,7 @@ AUTH_USER_MODEL = "accounts.User"
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:4200",
-    "https://ton-frontend.vercel.app",
+    "https://gestion-des-etablissements-front-en-fawn.vercel.app/",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
@@ -160,7 +160,7 @@ CORS_ALLOW_CREDENTIALS = True
 # ==========================================
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://ton-frontend.vercel.app",
+    "https://gestion-des-etablissements-front-en-fawn.vercel.app/",
 ]
 
 # ==========================================
