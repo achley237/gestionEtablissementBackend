@@ -109,3 +109,47 @@ class LogoutSerializer(serializers.Serializer):
 
     def save(self, **kwargs):
         RefreshToken(self.token).blacklist()
+
+
+# À ajouter dans accounts/serializers.py
+
+class AdminUserSerializer(serializers.ModelSerializer):
+    """Serializer complet pour la vue admin (lecture + actions statut)."""
+    redirect_to = serializers.CharField(read_only=True)
+
+    class Meta:
+        model = User
+        fields = (
+            'id',
+            'nom',
+            'prenom',
+            'email',
+            'role',
+            'statut',
+            'fonction',
+            'niveau_acces',
+            'date_inscription',
+            'is_active',
+            'redirect_to',
+        )
+        read_only_fields = (
+            'id', 'email', 'role', 'fonction',
+            'niveau_acces', 'date_inscription', 'redirect_to',
+        )
+
+
+class StatutUpdateSerializer(serializers.Serializer):
+    """Serializer pour mettre à jour le statut d'un utilisateur."""
+    statut = serializers.ChoiceField(
+        choices=[
+            (UserStatus.ACTIF,    'Actif'),
+            (UserStatus.SUSPENDU, 'Suspendu'),
+            (UserStatus.BANNI,    'Banni'),
+        ]
+    )
+    raison = serializers.CharField(
+        max_length=500,
+        required=False,
+        allow_blank=True,
+        help_text="Raison optionnelle (incluse dans l'email envoyé à l'utilisateur)",
+    )        
